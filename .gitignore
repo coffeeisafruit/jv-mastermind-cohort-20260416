@@ -1,0 +1,12 @@
+# Secrets
+.password.txt
+.staticrypt.json
+
+# Build artifacts — do NOT commit unencrypted HTML with PII
+site/
+encrypted/
+
+# Node / python
+node_modules/
+*.pyc
+__pycache__/
