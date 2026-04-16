@@ -360,7 +360,7 @@ HTML = f"""<!DOCTYPE html>
     border-bottom: 1px solid var(--border);
   }}
   .topnav-inner {{
-    max-width: 1200px; margin: 0 auto;
+    max-width: min(1600px, 95vw); margin: 0 auto;
     padding: 12px 24px;
     display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
   }}
@@ -375,7 +375,7 @@ HTML = f"""<!DOCTYPE html>
     color: #f8fafc;
     padding: 72px 24px 88px;
   }}
-  .hero-inner {{ max-width: 1200px; margin: 0 auto; }}
+  .hero-inner {{ max-width: min(1200px, 95vw); margin: 0 auto; }}
   .hero .eyebrow {{
     font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
     color: var(--accent); font-weight: 600; margin-bottom: 14px;
@@ -405,7 +405,9 @@ HTML = f"""<!DOCTYPE html>
   }}
   .meta-grid span {{ color: #e2e8f0; }}
 
-  main {{ max-width: 1200px; margin: 0 auto; padding: 48px 24px 80px; }}
+  main {{ max-width: min(1600px, 95vw); margin: 0 auto; padding: 48px 24px 80px; }}
+  .toc-card, main > h1, main > p:first-of-type {{ max-width: 1200px; }}
+  .person-card {{ max-width: 1200px; }}
 
   .toc-card {{
     background: var(--surface);
@@ -472,7 +474,7 @@ HTML = f"""<!DOCTYPE html>
   }}
   table {{
     width: 100%;
-    min-width: 1100px;
+    min-width: 920px;
     border-collapse: collapse;
     font-size: 13px;
     table-layout: auto;
@@ -564,7 +566,7 @@ HTML = f"""<!DOCTYPE html>
   .back-to-top:hover {{ background: var(--dark-2); text-decoration: none; }}
 
   footer {{
-    max-width: 1200px; margin: 0 auto;
+    max-width: min(1600px, 95vw); margin: 0 auto;
     padding: 32px 24px; color: var(--ink-soft);
     font-size: 13px; text-align: center;
     border-top: 1px solid var(--border);
