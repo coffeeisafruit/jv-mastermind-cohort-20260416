@@ -608,7 +608,6 @@ HTML = f"""<!DOCTYPE html>
     <div class="subtitle">Mastermind cohort · 15 pre-vetted partners</div>
     <div class="meta-grid">
       <div><strong>Batch</strong><span>jv-partners-20260416</span></div>
-      <div><strong>Source</strong><span>Exa research-pro</span></div>
       <div><strong>Context</strong><span>All 15 are mastermind members (pre-vetted, warm)</span></div>
       <div><strong>Generated</strong><span>April 16, 2026</span></div>
     </div>
@@ -633,7 +632,7 @@ HTML = f"""<!DOCTYPE html>
   </section>
 
   <h1>JV Partner Enrichment — Enriched Table</h1>
-  <p><strong>Batch:</strong> jv-partners-20260416 · <strong>Source:</strong> Exa research-pro · <strong>Context:</strong> All 15 are mastermind members (pre-vetted, warm). Full non-truncated content.</p>
+  <p><strong>Batch:</strong> jv-partners-20260416 · <strong>Context:</strong> All 15 are mastermind members (pre-vetted, warm). Full non-truncated content.</p>
 
   <h2 id="at-a-glance-comparison">At-a-glance comparison</h2>
   <div class="table-wrap"><table>
@@ -693,7 +692,7 @@ HTML = f"""<!DOCTYPE html>
 <a href="#top" class="back-to-top" aria-label="Back to top">↑</a>
 
 <footer>
-  JV MatchMaker · Generated April 16, 2026 · Enrichment via Exa research-pro
+  JV MatchMaker · Generated April 16, 2026
 </footer>
 
 <script>
