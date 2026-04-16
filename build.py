@@ -96,7 +96,20 @@ def first_url(s: str) -> str:
 def as_link(url: str, text: str | None = None) -> str:
     if not url:
         return "&mdash;"
-    return f'<a href="{html_lib.escape(url, quote=True)}">{html_lib.escape(text or url)}</a>'
+    display = text if text else _short_url_label(url)
+    return f'<a href="{html_lib.escape(url, quote=True)}" title="{html_lib.escape(url, quote=True)}">{html_lib.escape(display)}</a>'
+
+
+def _short_url_label(url: str) -> str:
+    """Turn https://www.rankbell.com/1-on-1-consultation-call into rankbell.com/1-on-1-consultation-call."""
+    m = re.match(r"https?://(?:www\.)?([^/]+)(/.*)?", url)
+    if not m:
+        return url
+    host = m.group(1)
+    path = m.group(2) or ""
+    if len(path) > 28:
+        path = path[:25] + "…"
+    return host + path
 
 
 def escape_cell(s: str) -> str:
@@ -226,14 +239,14 @@ def socials_inline(p: dict) -> str:
 glance_rows = []
 for i, p in enumerate(people, 1):
     glance_rows.append(f"""<tr>
-<td>{i}</td>
-<td><a href="#{p['slug']}"><strong>{tc(p['name'])}</strong></a></td>
+<td class="col-num">{i}</td>
+<td class="col-name"><a href="#{p['slug']}"><strong>{tc(p['name'])}</strong></a></td>
 <td>{tc(p['brand'])}</td>
 <td>{tc(p['role'])}</td>
 <td>{tc(p['location'])}</td>
 <td>{tc(p['category'])}</td>
 <td>{tc(p['email'])}</td>
-<td>{'yes' if p['booking_url'] else '&mdash;'}</td>
+<td class="col-yesno">{'yes' if p['booking_url'] else '&mdash;'}</td>
 <td>{tc(p['confidence'])}</td>
 </tr>""")
 
@@ -241,18 +254,18 @@ for i, p in enumerate(people, 1):
 online_rows = []
 for p in people:
     online_rows.append(f"""<tr>
-<td><a href="#{p['slug']}"><strong>{tc(p['name'])}</strong></a></td>
-<td>{as_link(p['website'])}</td>
-<td>{as_link(p['linkedin'])}</td>
+<td class="col-name"><a href="#{p['slug']}"><strong>{tc(p['name'])}</strong></a></td>
+<td class="col-url">{as_link(p['website'])}</td>
+<td class="col-url">{as_link(p['linkedin'])}</td>
 <td>{tc(p['podcast_text'])}</td>
-<td>{socials_inline(p)}</td>
+<td class="col-social">{socials_inline(p)}</td>
 </tr>""")
 
 # Section 3: Audience & reach
 audience_rows = []
 for p in people:
     audience_rows.append(f"""<tr>
-<td><a href="#{p['slug']}"><strong>{tc(p['name'])}</strong></a></td>
+<td class="col-name"><a href="#{p['slug']}"><strong>{tc(p['name'])}</strong></a></td>
 <td>{tc(p['email_list'])}</td>
 <td>{tc(p['top_socials'])}</td>
 <td>{tc(p['media'])}</td>
@@ -262,7 +275,7 @@ for p in people:
 jv_rows = []
 for p in people:
     jv_rows.append(f"""<tr>
-<td><a href="#{p['slug']}"><strong>{tc(p['name'])}</strong></a></td>
+<td class="col-name"><a href="#{p['slug']}"><strong>{tc(p['name'])}</strong></a></td>
 <td>{tc(p['jv_page'])}</td>
 <td>{tc(p['promotes'])}</td>
 <td>{tc(p['summits'])}</td>
@@ -273,10 +286,10 @@ for p in people:
 contact_rows = []
 for p in people:
     contact_rows.append(f"""<tr>
-<td><a href="#{p['slug']}"><strong>{tc(p['name'])}</strong></a></td>
-<td>{tc(p['phone'])}</td>
+<td class="col-name"><a href="#{p['slug']}"><strong>{tc(p['name'])}</strong></a></td>
+<td class="col-social">{tc(p['phone'])}</td>
 <td>{tc(p['email'])}</td>
-<td>{as_link(p['booking_url'])}</td>
+<td class="col-url">{as_link(p['booking_url'])}</td>
 <td>{tc(p['best_channel'])}</td>
 </tr>""")
 
@@ -457,17 +470,32 @@ HTML = f"""<!DOCTYPE html>
     box-shadow: 0 1px 2px rgba(15,23,42,0.03);
     -webkit-overflow-scrolling: touch;
   }}
-  table {{ width: 100%; min-width: 720px; border-collapse: collapse; font-size: 13px; }}
+  table {{
+    width: 100%;
+    min-width: 1100px;
+    border-collapse: collapse;
+    font-size: 13px;
+    table-layout: auto;
+  }}
   th {{
     background: var(--dark); color: #f8fafc;
     text-align: left; padding: 10px 14px;
     font-weight: 600; font-size: 12px;
+    white-space: nowrap;
   }}
   td {{
     padding: 10px 14px;
     border-bottom: 1px solid var(--border);
-    vertical-align: top; word-break: break-word;
+    vertical-align: top;
+    overflow-wrap: anywhere;
+    hyphens: none;
   }}
+  td.col-name {{ white-space: nowrap; min-width: 150px; }}
+  td.col-num  {{ white-space: nowrap; width: 32px; text-align: right; color: var(--ink-soft); }}
+  td.col-url  {{ min-width: 180px; max-width: 260px; }}
+  td.col-url a {{ overflow-wrap: anywhere; }}
+  td.col-social {{ white-space: nowrap; }}
+  td.col-yesno {{ white-space: nowrap; text-align: center; }}
   tbody tr:nth-child(even) {{ background: #f8fafc; }}
   tbody tr:hover {{ background: var(--hover); }}
   td strong {{ color: var(--brand); font-weight: 700; }}
